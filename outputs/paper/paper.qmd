@@ -3,6 +3,7 @@ title: "Analysis of Trends and Financial Implications of Fire Incidents in Toron
 author: "Yingxuan Sun"
 format: pdf
 editor: visual
+abstract: "This article examines trends and economic impacts of Toronto's fire incidents from 2011 to 2022.  The analysis is based on comprehensive fire data from the Toronto Public Open Data Portal, aiding in effective urban planning and emergency management."
 bibliography: references.bib
 ---
 
