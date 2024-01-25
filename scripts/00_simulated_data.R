@@ -15,7 +15,7 @@ dates <- seq(from = ymd("2018-01-01"), to = ymd("2022-12-31") ,by = "day" )
 fire_incident_time <- sample(dates, 1000, replace = TRUE)
 
 # Simulate Estimated_Dollar_Loss
-estimated_dollar_loss <- runif(1000, min = 0, max = 500000)
+estimated_dollar_loss <- sample(0:50000, 1000, replace = TRUE) * 10
 
 # Creating the simulated dataset
 simulated_fire_data <- data.frame(Fire_Incident_Time = fire_incident_time, 
@@ -23,3 +23,4 @@ simulated_fire_data <- data.frame(Fire_Incident_Time = fire_incident_time,
 
 # Write the simulated data to a CSV file
 write.csv(x = simulated_fire_data, file = "outputs/data/simulated_fire_data.csv")
+

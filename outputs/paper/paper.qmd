@@ -1,0 +1,84 @@
+---
+title: "Analysis of Trends and Financial Implications of Fire Incidents in Toronto"
+author: "Yingxuan Sun"
+format: pdf
+editor: visual
+bibliography: references.bib
+---
+
+```{r,results='hide', echo=FALSE,message=FALSE,warning=FALSE}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(readr)
+library(here)
+```
+
+## **1.Introduction**
+
+Fire incident, as a widespread disaster, poses significant risks and challenges to cities around the world. In urban environments, the consequences of fire are intensified by dense populations and frequent commercial and community activities. In addition to direct safety threats, fires result in a range of direct and indirect costs such as repairs, evacuations, and event cancellations, placing a significant financial burden on individuals and municipal resources. Toronto, one of the most populated and prosperous cities in North America, is no stranger to these challenges. The purpose of this paper is to analyze the trends and economic impacts of fire incidents in Toronto over the 12-year period from 2011 to 2022, providing insights into the costs of fire that can inform effective urban planning and emergency management strategies.
+
+## **2.Data**
+
+The data source used to analyze Toronto fire incidents from 2011 to 2022 comes from a publicly available dataset hosted by the City of Toronto on its Open Data Portal[@citeopendata]. This data set is located in the comprehensive resource fire incident data set provided by the municipal government.
+
+This dataset includes detailed records of fire incidents reported in the City of Toronto during a specified period. This is part of the city's initiative to increase transparency and citizen engagement by making municipal data free to the public. This data set typically contains detailed information about the date, location, type, and estimated dollar damage of each fire event. This paper mainly uses information on the year of fire occurrence and dollar loss data.
+
+Researchers, policymakers, and the public can use this dataset to analyze trends in fire events, assess the effectiveness of fire safety measures, and develop emergency response and urban planning strategies. The availability of such data is critical to understanding the nature and impact of fire events in major urban centers such as Toronto. It helps make informed decisions and helps build safer communities.\
+
+This paper uses data from Toronto's Open Data portal [@citeopendata] and utilizes the R programming language for data analysis [@citeR] . Key R packages employed include 'tidyverse' for data science tasks [@citetidy], 'dplyr' for data manipulation[@citedyplr], OpenAI's ChatGPT was also utilized for writing assistance[@cite_chatgpt4].
+
+## **3.Data Analysis**
+
+```{r,results='hide', echo=FALSE}
+fire_data <- read_csv(here::here ("outputs/data/Cleaned_Fire_Incidents_Data.csv"),
+              show_col_types = FALSE)
+
+fire_data$Year <- as.integer(fire_data$Year)
+
+# Aggregating the number of fire incidents per year
+fire_counts <- fire_data %>%
+  group_by(Year) %>%
+  summarize(Fire_Count = n())
+
+# Creating the plot
+ggplot(fire_counts, aes(x = Year, y = Fire_Count)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = fire_counts$Year) +
+  labs(title = "Number of Fire Incidents in Toronto (2011-2022)",
+       x = "Year",
+       y = "Number of Fire Incidents") +
+  theme_minimal()
+```
+
+The graph above demonstrates change in number of fire incidents in Toronto from 2011 to 2022, which reveals some interesting trends. Initially, from 2011 to 2017, there was not much change, with fluctuations in the number of incidents. This could suggest that the factors affecting fire incidents remained fairly consistent during this period.
+
+In 2018, there was a significant increase, which may be linked to a surge in people moving to Toronto due to policy changes. This higher population density could have led to more fire incidents.
+
+After 2018, there was a decline in fire incidents, hitting a low point in 2021. This drop could be due to improved fire prevention measures and COVID-19's impact, as lockdowns and reduced activities likely lowered the risk of fires.
+
+However, in 2022, there was a sudden increase in fire incidents, possibly because of the return to normal activities post-COVID. The existing fire safety measures may not have been fully adapted to this rapid change, leading to more incidents. This period could represent the challenges of readjusting to pre-pandemic life.
+
+```{r,results='hide', echo=FALSE}
+# Summarizing the estimated dollar loss per year
+annual_loss <- aggregate(Estimated_Dollar_Loss ~ Year, data = fire_data, sum)
+
+# Creating the plot
+ggplot(annual_loss, aes(x = Year, y = Estimated_Dollar_Loss)) +
+  geom_line(color = "red") +
+  geom_point(color = "red") +
+  scale_x_continuous(breaks = fire_counts$Year) +
+  labs(title = "Estimated Dollar Loss Due to Fire Incidents in Toronto (2011-2022)",
+       x = "Year",
+       y = "Estimated Dollar Loss ($)") +
+  theme_minimal()
+```
+
+The analysis of estimated economic losses due to fire incidents in Toronto from 2011 to 2018 shows relatively stable figures with a general upward trend. However, in 2019, there was a notable peak in economic losses, which might be attributed to specific incidents or factors that led to higher financial damages.
+
+Interestingly, from 2020 to 2022, there was a decline in economic losses, bringing the figures back to levels similar to those seen before 2019. This decline in economic losses during this period could be influenced by several factors, including improved fire prevention measures, better emergency response, or even the impact of COVID-19, which may have reduced economic activity and consequently lowered the financial losses associated with fires.
+
+When considering this economic loss data alongside the earlier analysis of the number of fire incidents, it becomes apparent that while the number of incidents increased in 2022, the economic losses did not follow the same pattern. This could indicate that there was a more efficient response and mitigation of fire incidents during that year, resulting in a lower economic impact despite a higher number of incidents.
+
+In summary, there appears to be a correlation between the number of fire incidents and economic losses, but various factors, including improved safety measures and the influence of external events like COVID-19, can significantly impact the economic consequences of fire incidents in Toronto.
